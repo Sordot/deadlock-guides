@@ -6,9 +6,11 @@ import App from './App.tsx';
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 
+import { theme } from '../theme.ts';
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <MantineProvider defaultColorScheme="dark">
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <App />
     </MantineProvider>
   </React.StrictMode>,
