@@ -37,7 +37,7 @@ export function Home() {
           >
             <Card.Section>
               <Image
-                src={hero.images?.icon_hero_card} 
+                src={hero.images?.icon_hero_card_webp} 
                 alt={hero.name}
                 height={100}
                 fit="contain"
