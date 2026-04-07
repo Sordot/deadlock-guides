@@ -23,7 +23,7 @@ export interface Hero {
 const fetchHeroes = async (): Promise<Hero[]> => {
     const response = await fetch('https://assets.deadlock-api.com/v2/heroes?language=english&client_version=6430&only_active=true')
     if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Failed to fetch heroes');
     }
     return response.json();
 };
