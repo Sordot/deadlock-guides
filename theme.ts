@@ -1,55 +1,35 @@
-import { createTheme, type MantineColorsTuple } from '@mantine/core';
-
-// Crisp, readable white/grays. Frost White (#f1f3f5) is at index 2.
-const frostWhite: MantineColorsTuple = [
-  '#fdfdfd', '#f8f9fa', '#f1f3f5', '#e9ecef', '#dee2e6', 
-  '#ced4da', '#adb5bd', '#868e96', '#495057', '#343a40'
-];
-
-// Primary Brand Color: Includes #72947f (Index 5), #3f5d4d (Index 8), #2f4442 (Index 9)
-const deadlockGreen: MantineColorsTuple = [
-  '#eef3f0', '#e0e8e3', '#c2d3c9', '#a2bcae', '#86a896', 
-  '#72947f', '#5e7e6a', '#4c6857', '#3f5d4d', '#2f4442'
-];
+import { createTheme } from '@mantine/core';
+import { generateColors } from '@mantine/colors-generator';
 
 export const theme = createTheme({
+
   colors: {
-    frost: frostWhite,
-    green: deadlockGreen,
+    deadlockGreen: generateColors('#72947f'),
   },
-  primaryColor: 'green',
-  primaryShade: 5,
-  autoContrast: true,
-  defaultRadius: 'sm',
-  
-  headings: {
-    fontWeight: '800', 
-  },
-  
+
+  // Set the generated Deadlock Green as the default primary color for the app
+  primaryColor: 'deadlockGreen',
+
+  // Set the global white value to your Frostwhite hex
+  white: '#f1f3f5',
+
+  // Force typography components to use Frostwhite by default
   components: {
-    AppShell: {
-      styles: {
-        main: { backgroundColor: '#222021' }, 
-        header: { backgroundColor: '#181718', borderBottom: '1px solid #2f4442' },
-        navbar: { backgroundColor: '#181718', borderRight: '1px solid #2f4442' },
-      }
-    },
-    Button: {
+    Text: {
       defaultProps: {
-        variant: 'filled',
-      }
+        c: '#f1f3f5',
+      },
     },
     Title: {
       defaultProps: {
-        // Pointing directly to #f1f3f5 in our new array
-        c: 'frost.2' 
-      }
+        c: '#f1f3f5',
+      },
     },
-    Text: {
+    // Optional: Keep links readable by setting them to your custom green
+    Anchor: {
       defaultProps: {
-        // A slightly darker gray from the frost array for highly readable paragraph text
-        c: 'frost.5' 
-      }
-    }
-  }
+        c: 'deadlockGreen.5', // Targets the middle shade of the generated palette
+      },
+    },
+  },
 });

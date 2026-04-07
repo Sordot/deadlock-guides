@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, Title, Button, Tooltip, ActionIcon, Stack } from '@mantine/core';
+import { AppShell, Burger, Group, Title, Button, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, NavLink as RouterLink, useLocation } from 'react-router-dom';
 import { IconHome, IconSquarePlus } from '@tabler/icons-react';
@@ -10,8 +10,8 @@ export function MainLayout() {
     return (
         <AppShell
             header={{ height: 60 }}
-            //Sidebar styles to be "icon only"
-            navbar={{ width: 80, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+            // Expanded width from 80 to 250 to accommodate text
+            navbar={{ width: 250, breakpoint: 'sm', collapsed: { mobile: !opened } }}
             padding="md"
         >
             <AppShell.Header>
@@ -21,61 +21,42 @@ export function MainLayout() {
                         <Title order={3}>Deadlock Guides</Title>
                     </Group>
 
-                    <Button component={RouterLink} to="/create" color="green">
+                    <Button component={RouterLink} to="/create" color="deadlockGreen">
                         + New Guide
                     </Button>
                 </Group>
             </AppShell.Header>
 
             <AppShell.Navbar p="sm">
-                {/* Stack centers the icons vertically and horizontally */}
-                <Stack align="center" gap="md" mt="sm">
+                <NavLink
+                    component={RouterLink}
+                    to="/"
+                    label="Home"
+                    leftSection={<IconHome size={20} stroke={1.5} />}
+                    // Mantine's NavLink automatically applies your primary color when active is true
+                    active={location.pathname === '/'}
+                    onClick={toggle}
+                />
 
-                    <Tooltip label="Home" position="right" withArrow>
-                        <ActionIcon
-                            component={RouterLink}
-                            to="/"
-                            //Conditional styling based on the current URL route
-                            variant={location.pathname === '/' ? 'light' : 'subtle'}
-                            color={location.pathname === '/' ? 'green.5' : 'gray'}
-                            size="xl"
-                            radius="md"
-                            onClick={toggle}
-                        >
-                            <IconHome size={28} stroke={1.5} />
-                        </ActionIcon>
-                    </Tooltip>
+                <NavLink
+                    component={RouterLink}
+                    to="/create"
+                    label="Create Guide"
+                    leftSection={<IconSquarePlus size={20} stroke={1.5} />}
+                    active={location.pathname === '/create'}
+                    onClick={toggle}  
+                />
 
-                    <Tooltip label="Create Guide" position="right" withArrow>
-                        <ActionIcon
-                            component={RouterLink}
-                            to="/create"
-                            variant={location.pathname === '/create' ? 'light' : 'subtle'}
-                            color={location.pathname === '/create' ? 'green.5' : 'gray'}
-                            size="xl"
-                            radius="md"
-                            onClick={toggle}
-                        >
-                            <IconSquarePlus size={28} stroke={1.5} />
-                        </ActionIcon>
-                    </Tooltip>
-
-                    {/* placeholder route for heroes */}
-                    {/* <Tooltip label="Heroes" position="right" withArrow>
-                        <ActionIcon
-                            component={RouterLink}
-                            to="/heroes"
-                            variant={location.pathname === '/heroes' ? 'light' : 'subtle'}
-                            color={location.pathname === '/heroes' ? 'green' : 'gray'}
-                            size="xl"
-                            radius="md"
-                            onClick={toggle}
-                        >
-                            <IconSwords size={28} stroke={1.5} />
-                        </ActionIcon>
-                    </Tooltip> */}
-
-                </Stack>
+                {/* placeholder route for heroes */}
+                {/* <NavLink
+                    component={RouterLink}
+                    to="/heroes"
+                    label="Heroes"
+                    leftSection={<IconSwords size={20} stroke={1.5} />}
+                    active={location.pathname === '/heroes'}
+                    onClick={toggle}
+                    borderRadius="md"
+                /> */}
             </AppShell.Navbar>
 
             <AppShell.Main>
