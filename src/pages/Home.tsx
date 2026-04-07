@@ -1,5 +1,6 @@
 import { useHeroes } from '../hooks/useHeroes';
 import { Container, Title, Text, Loader, Alert, SimpleGrid, Card, Image, Group } from '@mantine/core';
+import { Link } from 'react-router-dom';
 import classes from './Home.module.css'
 
 export function Home() {
@@ -23,7 +24,17 @@ export function Home() {
       {/* SimpleGrid is great for responsive card layouts */}
       <SimpleGrid cols={{ base: 3, sm: 4, md: 6, lg: 8, xl: 10 }}>
         {sortedHeroes?.map((hero) => (
-          <Card key={hero.id} shadow="sm" padding="xs" radius="md" withBorder className={classes.heroCard}>
+          <Card 
+            key={hero.id}
+            component={Link} // Turns the entire card into a router link
+            to={`/heroes/${hero.id}`} //Dynamic hero page route
+            shadow="sm" 
+            padding="xs" 
+            radius="md" 
+            withBorder 
+            className={classes.heroCard}
+            style={{ textDecoration: 'none' }} // Prevents standard link underlining
+          >
             <Card.Section>
               <Image
                 src={hero.images?.icon_hero_card} 
