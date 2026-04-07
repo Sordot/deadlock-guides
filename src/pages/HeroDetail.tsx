@@ -21,7 +21,7 @@ export function HeroDetail() {
                     variant="subtle"
                     color="deadlockGreen"
                     leftSection={<IconArrowLeft size={16} />}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/heroes')}
                 >
                     Back to Roster
                 </Button>
@@ -59,8 +59,8 @@ export function HeroDetail() {
                         <Divider my="sm" />
 
                         {/* Description Data */}
-                        <Text fw={700} size="lg">{hero.description?.role}</Text>
-                        <Text size="sm">{hero.description?.playstyle}</Text>
+                        {hero.description.role && <Text fw={700} size="lg">{hero.description.role}</Text>}
+                        {hero.description.playstyle && <Text size="sm">{hero.description.playstyle}</Text>}
                         <Text c="dimmed">
                             {hero.description?.lore || "Lore not available."}
                         </Text>

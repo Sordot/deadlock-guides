@@ -1,17 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 
-// Define the shape of your expected data (optional, but good for TypeScript)
-export interface StatDisplay {
-  value: number;
-  display_stat_name: string;
-}
-
 export interface Hero {
   id: number;
   name: string;
   tags: string[];
   hero_type: string; // e.g., "assassin", "bruiser"
-  complexity: number; // Great for showing a "Difficulty: 1/3" UI
+  complexity: number; 
   gun_tag: string;
   
   description: {
@@ -19,17 +13,11 @@ export interface Hero {
     role: string;
     playstyle: string;
   };
-
-  // We only include the WebP formats since we established those are best for performance
   images: {
     icon_hero_card_webp: string;
     hero_card_gloat_webp: string;
     hero_card_critical_webp: string;
   };
-
-  // Using a TypeScript Record prevents us from having to manually type out 
-  // all 20+ stats (max_health, sprint_speed, etc.) while keeping it strictly typed.
-  starting_stats: Record<string, StatDisplay>;
 }
 
 const fetchHeroes = async (): Promise<Hero[]> => {

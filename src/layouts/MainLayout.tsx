@@ -1,7 +1,7 @@
 import { AppShell, Burger, Group, Title, Button, NavLink } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, NavLink as RouterLink, useLocation } from 'react-router-dom';
-import { IconHome, IconSquarePlus } from '@tabler/icons-react';
+import { IconHome, IconSquarePlus, IconSwords } from '@tabler/icons-react';
 
 export function MainLayout() {
     const [opened, { toggle }] = useDisclosure();
@@ -37,28 +37,24 @@ export function MainLayout() {
                     active={location.pathname === '/'}
                     onClick={toggle}
                 />
-
                 <NavLink
-                    component={RouterLink}
-                    to="/create"
-                    label="Create Guide"
-                    leftSection={<IconSquarePlus size={20} stroke={1.5} />}
-                    active={location.pathname === '/create'}
-                    onClick={toggle}  
-                />
-
-                {/* placeholder route for heroes */}
-                {/* <NavLink
                     component={RouterLink}
                     to="/heroes"
                     label="Heroes"
                     leftSection={<IconSwords size={20} stroke={1.5} />}
                     active={location.pathname === '/heroes'}
                     onClick={toggle}
-                    borderRadius="md"
-                /> */}
+                />
+                <NavLink
+                    component={RouterLink}
+                    to="/create"
+                    label="Create Guide"
+                    leftSection={<IconSquarePlus size={20} stroke={1.5} />}
+                    active={location.pathname === '/create'}
+                    onClick={toggle}
+                />
             </AppShell.Navbar>
-
+            
             <AppShell.Main>
                 <Outlet />
             </AppShell.Main>
