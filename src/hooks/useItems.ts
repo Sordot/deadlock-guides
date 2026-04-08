@@ -6,12 +6,9 @@ export interface Item {
   name: string;
   item_slot_type: string; 
   cost: number;
-  item_tier: number; // Also updated this to match your JSON snippet ('item_tier' instead of 'tier')
-  shopable: boolean; // Fixed spelling to match the API
-  description?: {
-    desc: string;
-  };
-  shop_image?: string;
+  item_tier: number; 
+  shopable: boolean; 
+  shop_image_webp?: string;
 }
 
 const fetchItems = async (): Promise<Item[]> => {
