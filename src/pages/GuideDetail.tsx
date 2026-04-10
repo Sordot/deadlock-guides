@@ -1,9 +1,10 @@
 // src/pages/GuideDetail.tsx
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Container, Title, Text, Tooltip, Paper, Group, Button, Badge, Stack, Image, Alert, Loader, Divider, SimpleGrid } from '@mantine/core';
+import { Container, Title, Text, Tooltip, Paper, Group, Button, Badge, Stack, Image, Alert, Loader, Divider } from '@mantine/core';
 import { IconArrowLeft, IconThumbUp } from '@tabler/icons-react';
 import { useHero } from '../hooks/useHero';
+import { useHeroes } from '../hooks/useHeroes';
 import { type GuideFormValues, type SavedGuide } from '../context/GuideFormContext';
 import { type Item } from '../hooks/useItems';
 
@@ -20,6 +21,8 @@ const getBorderColor = (type: string) => {
 export function GuideDetail() {
     const { guideId } = useParams<{ guideId: string }>();
     const [guide, setGuide] = useState<SavedGuide | null>(null);
+
+    const { data: allHeroes } = useHeroes();
 
     useEffect(() => {
         // Fetch from local storage placeholder backend
@@ -102,14 +105,13 @@ export function GuideDetail() {
                 </Group>
             </Paper>
 
-            <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="xl">
+            <Stack gap="xl">
                 {/* ITEMS SECTION */}
                 <Paper shadow="sm" p="xl" radius="md" withBorder>
                     <Title order={3} mb="lg">Item Build</Title>
-
                     {(['early', 'mid', 'late', 'situational'] as const).map((phase) => (
                         <div key={phase} style={{ marginBottom: '1.5rem' }}>
-                            <Title order={5} tt="capitalize" mb="sm">{phase}</Title>
+                            <Title order={5} tt="capitalize" mb="sm">{phase} Game</Title>
                             {guide.build[phase].length === 0 ? (
                                 <Text c="dimmed" size="sm" fs="italic">No items specified.</Text>
                             ) : (
@@ -139,28 +141,58 @@ export function GuideDetail() {
                 <Paper shadow="sm" p="xl" radius="md" withBorder>
                     <Title order={3} mb="lg">Strategy & Matchups</Title>
 
-                    {/* Check if the array exists and has items */}
                     {(!guide.strategy || guide.strategy.length === 0) ? (
                         <Text c="dimmed" fs="italic">The author did not provide a strategy text.</Text>
                     ) : (
                         <Stack gap="xl">
                             {guide.strategy.map((module) => (
                                 <div key={module.id}>
-                                    {/* Render the custom title the user gave this block */}
                                     <Title order={5} mb="xs" c="deadlockGreen.7">{module.title}</Title>
 
-                                    {/* Render the content based on the module type */}
                                     {module.type === 'text' && (
                                         <Text style={{ whiteSpace: 'pre-wrap' }}>{module.content}</Text>
                                     )}
 
-                                    {/* Note: We will add matchup and itemization rendering here later! */}
+                                    {/* NEW: Render the Matchup Block */}
+                                    {module.type === 'matchup' && (
+                                        <Paper withBorder p="md" radius="md" mt="xs">
+                                            <Group wrap="nowrap" align="flex-start">
+                                                {/* Resolve the image from the ID */}
+                                                <Image
+                                                    src={allHeroes?.find(h => String(h.id) === String(module.content.enemyHeroId))?.images?.icon_hero_card_webp}
+                                                    w={80}
+                                                    radius="md"
+                                                    fallbackSrc="https://placehold.co/80?text=Hero"
+                                                />
+                                                <Stack gap="xs" w="100%">
+                                                    <Group justify="space-between">
+                                                        <Text fw={700} size="lg">
+                                                            Vs. {allHeroes?.find(h => String(h.id) === String(module.content.enemyHeroId))?.name || 'Unknown Hero'}
+                                                        </Text>
+                                                        {/* Dynamically color the badge based on the string saved! */}
+                                                        <Badge
+                                                            color={
+                                                                module.content.difficulty === 'Easy' ? 'green' :
+                                                                    module.content.difficulty === 'Medium' ? 'orange' :
+                                                                        module.content.difficulty === 'Hard' ? 'red' : 'gray'
+                                                            }
+                                                            variant="light"
+                                                            size="lg"
+                                                        >
+                                                            {module.content.difficulty || 'Unrated'}
+                                                        </Badge>
+                                                    </Group>
+                                                    <Text style={{ whiteSpace: 'pre-wrap' }} size="sm">{module.content.analysis}</Text>
+                                                </Stack>
+                                            </Group>
+                                        </Paper>
+                                    )}
                                 </div>
                             ))}
                         </Stack>
                     )}
                 </Paper>
-            </SimpleGrid>
+            </Stack>
         </Container>
     );
 }
