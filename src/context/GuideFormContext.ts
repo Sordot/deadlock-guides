@@ -21,6 +21,7 @@ export interface GuideFormValues {
 export interface SavedGuide extends GuideFormValues {
   id: string;
   createdAt: string;
+  upvotes: number;
 }
 
 // Create the context hooks. Mantine creates a dedicated Provider and hooks specifically typed based on interface above

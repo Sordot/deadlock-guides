@@ -88,6 +88,7 @@ export function CreateGuide() {
       // eslint-disable-next-line react-hooks/purity
       id: Date.now().toString(), // Simple unique ID generator
       createdAt: new Date().toISOString(),
+      upvotes: 0
     };
 
     // 2. Fetch existing guides from local storage

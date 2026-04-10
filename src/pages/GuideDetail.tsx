@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Title, Text, Tooltip, Paper, Group, Button, Badge, Stack, Image, Alert, Loader, Divider, SimpleGrid } from '@mantine/core';
-import { IconArrowLeft } from '@tabler/icons-react';
+import { IconArrowLeft, IconThumbUp } from '@tabler/icons-react';
 import { useHero } from '../hooks/useHero';
 import { type GuideFormValues, type SavedGuide } from '../context/GuideFormContext';
 import { type Item } from '../hooks/useItems';
@@ -33,6 +33,25 @@ export function GuideDetail() {
     // Use the existing hook to grab the hero details from the API
     const { hero, isLoading } = useHero(guide?.heroId || undefined);
 
+    const handleUpvote = () => {
+        if (!guide) return;
+
+        // Read the current state of local storage
+        const existingGuides: SavedGuide[] = JSON.parse(localStorage.getItem('deadlock_guides') || '[]');
+
+        // Find this guide and increment its upvote count (defaulting to 0 for older guides)
+        const updatedGuides = existingGuides.map(g => {
+            if (g.id === guide.id) {
+                return { ...g, upvotes: (g.upvotes || 0) + 1 };
+            }
+            return g;
+        });
+
+        // Save back to local storage and update local state
+        localStorage.setItem('deadlock_guides', JSON.stringify(updatedGuides));
+        setGuide({ ...guide, upvotes: (guide.upvotes || 0) + 1 });
+    };
+
     if (!guide) return <Alert color="red" mt="xl" mx="md">Guide not found.</Alert>;
     if (isLoading) return <Loader mt="xl" mx="auto" display="block" />;
 
@@ -61,7 +80,17 @@ export function GuideDetail() {
                         fallbackSrc="https://placehold.co/120x150?text=No+Image"
                     />
                     <Stack gap="xs" w="100%">
-                        <Title order={1}>{guide.title}</Title>
+                        <Group justify="space-between" align="flex-start">
+                            <Title order={1}>{guide.title}</Title>
+                            <Button
+                                variant="light"
+                                color="deadlockGreen"
+                                leftSection={<IconThumbUp size={18} />}
+                                onClick={handleUpvote}
+                            >
+                                Upvote ({guide.upvotes || 0})
+                            </Button>
+                        </Group>
                         <Group gap="xs">
                             <Badge size="lg" color="deadlockGreen">{hero?.name || 'Unknown Hero'}</Badge>
                             <Badge size="lg" variant="outline" color="gray">{guide.role}</Badge>
