@@ -1,13 +1,27 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useHero } from '../hooks/useHero';
-import { Loader, Alert, Text, Title, Button, Group, Image, Stack, Paper, Badge, Divider } from '@mantine/core';
-import { IconArrowLeft } from '@tabler/icons-react';
+import { Loader, Alert, Text, Title, Button, Group, Image, Stack, Paper, Badge, Divider, Card, SimpleGrid } from '@mantine/core';
+import { IconArrowLeft, IconPlus } from '@tabler/icons-react';
+import { type SavedGuide } from '../context/GuideFormContext';
 
 export function HeroDetail() {
     const { heroId } = useParams<{ heroId: string }>();
     const navigate = useNavigate();
 
     const { hero, isLoading, isError, error } = useHero(heroId);
+
+    // 1. Fetch and filter guides specific to this hero using lazy state initialization
+    const [heroGuides] = useState<SavedGuide[]>(() => {
+        const saved: SavedGuide[] = JSON.parse(localStorage.getItem('deadlock_guides') || '[]');
+
+        // Filter guides where the heroId matches the current page's hero
+        // Note: We cast both to String in case the form saved it as a number but useParams returns a string
+        const filtered = saved.filter((g) => String(g.heroId) === String(heroId));
+
+        // Sort by newest
+        return filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    });
 
     if (isLoading) return <Loader mt="xl" mx="auto" display="block" />;
     if (isError) return <Alert color="red" mt="xl">{error?.message}</Alert>;
@@ -67,6 +81,58 @@ export function HeroDetail() {
                     </Stack>
                 </Group>
             </Paper>
+
+            {/* --- NEW COMMUNITY GUIDES SECTION --- */}
+            <Stack gap="md" mt="sm">
+                <Group justify="space-between">
+                    <Title order={2}>Community Guides</Title>
+                    {/* A quick link to create a new guide if they are inspired */}
+                    <Button
+                        component={Link}
+                        to={`/create?heroId=${heroId}`} //sends them to create page with current hero id so form can prefill
+                        variant="light"
+                        color="deadlockGreen"
+                        leftSection={<IconPlus size={16} />}
+                    >
+                        Create Guide
+                    </Button>
+                </Group>
+
+                {heroGuides.length === 0 ? (
+                    <Paper withBorder p="xl" radius="md">
+                        <Text c="dimmed" ta="center">
+                            No guides have been created for {hero.name} yet. Be the first to share your build!
+                        </Text>
+                    </Paper>
+                ) : (
+                    <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }}>
+                        {heroGuides.map((guide) => (
+                            <Card
+                                key={guide.id}
+                                component={Link}
+                                to={`/guides/${guide.id}`}
+                                shadow="xs"
+                                padding="md"
+                                radius="md"
+                                withBorder
+                                style={{
+                                    textDecoration: 'none',
+                                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <Group justify="space-between" mb="xs" wrap="nowrap">
+                                    <Text fw={600} truncate>{guide.title}</Text>
+                                    <Badge color="deadlockGreen">{guide.role}</Badge>
+                                </Group>
+                                <Text size="xs" c="dimmed">
+                                    Published: {new Date(guide.createdAt).toLocaleDateString()}
+                                </Text>
+                            </Card>
+                        ))}
+                    </SimpleGrid>
+                )}
+            </Stack>
         </Stack>
     );
 }

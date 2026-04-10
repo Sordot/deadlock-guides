@@ -1,7 +1,7 @@
 // src/pages/CreateGuide.tsx
 import { useState, useEffect } from 'react';
 import { Stepper, Button, Group, Container, Title } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGuideForm, GuideFormProvider } from '../context/GuideFormContext';
 import { StepGeneral } from '../components/guide-builder/StepGeneral';
 import { StepLoadout } from '../components/guide-builder/StepLoadout';
@@ -11,11 +11,15 @@ export function CreateGuide() {
   const [activeStep, setActiveStep] = useState(0);
   const navigate = useNavigate();
 
+  // Initialize the searchParams hook to read the URL
+  const [searchParams] = useSearchParams();
+  const preselectedHeroId = searchParams.get('heroId');
+
   // Initialize the form with validation rules
   const form = useGuideForm({
     initialValues: {
       title: '',
-      heroId: null,
+      heroId: preselectedHeroId || null,
       role: null,
       build: { early: [], mid: [], late: [], situational: [] },
       strategy: '',
@@ -29,8 +33,7 @@ export function CreateGuide() {
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      // form.isDirty() is a built-in Mantine function that returns true 
-      // if any value has changed from the initialValues
+      // form.isDirty() is a built-in Mantine function that returns true if any value has changed from the initialValues
       if (form.isDirty()) {
         e.preventDefault();
         // Setting e.returnValue to any string triggers the browser's native warning dialog
