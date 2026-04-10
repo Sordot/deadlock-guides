@@ -138,10 +138,26 @@ export function GuideDetail() {
                 {/* STRATEGY SECTION */}
                 <Paper shadow="sm" p="xl" radius="md" withBorder>
                     <Title order={3} mb="lg">Strategy & Matchups</Title>
-                    {guide.strategy ? (
-                        <Text style={{ whiteSpace: 'pre-wrap' }}>{guide.strategy}</Text>
-                    ) : (
+
+                    {/* Check if the array exists and has items */}
+                    {(!guide.strategy || guide.strategy.length === 0) ? (
                         <Text c="dimmed" fs="italic">The author did not provide a strategy text.</Text>
+                    ) : (
+                        <Stack gap="xl">
+                            {guide.strategy.map((module) => (
+                                <div key={module.id}>
+                                    {/* Render the custom title the user gave this block */}
+                                    <Title order={5} mb="xs" c="deadlockGreen.7">{module.title}</Title>
+
+                                    {/* Render the content based on the module type */}
+                                    {module.type === 'text' && (
+                                        <Text style={{ whiteSpace: 'pre-wrap' }}>{module.content}</Text>
+                                    )}
+
+                                    {/* Note: We will add matchup and itemization rendering here later! */}
+                                </div>
+                            ))}
+                        </Stack>
                     )}
                 </Paper>
             </SimpleGrid>
