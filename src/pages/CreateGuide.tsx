@@ -61,7 +61,7 @@ export function CreateGuide() {
 
   const nextStep = () => {
     if (validateStep(activeStep)) {
-      setActiveStep((current) => (current < 4 ? current + 1 : current));
+      setActiveStep((current) => (current < 5 ? current + 1 : current));
     }
   };
 
@@ -155,7 +155,7 @@ export function CreateGuide() {
               Back
             </Button>
 
-            {activeStep === 4 ? (
+            {activeStep === 5 ? (
               <Button type="submit" color="green">Publish Guide</Button>
             ) : (
               <Button type="button" onClick={nextStep}>Next step</Button>
