@@ -24,7 +24,7 @@ export function CreateGuide() {
       role: null,
       abilityOrder: [],
       build: { early: [], mid: [], late: [], situational: [] },
-      strategy: '',
+      strategy: [],
     },
     validate: {
       title: (value) => (value.length < 3 ? 'Title must be at least 3 characters' : null),
