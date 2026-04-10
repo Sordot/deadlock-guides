@@ -4,14 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { Container, Title, Text, Tooltip, Paper, Group, Button, Badge, Stack, Image, Alert, Loader, Divider, SimpleGrid } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useHero } from '../hooks/useHero';
-import { type GuideFormValues } from '../context/GuideFormContext';
+import { type GuideFormValues, type SavedGuide } from '../context/GuideFormContext';
 import { type Item } from '../hooks/useItems';
-
-// Extend our form values to include the data we attached upon saving
-interface SavedGuide extends GuideFormValues {
-    id: string;
-    createdAt: string;
-}
 
 // Reuse the border color logic from StepLoadout
 const getBorderColor = (type: string) => {
