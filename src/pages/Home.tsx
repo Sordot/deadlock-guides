@@ -43,7 +43,8 @@ export function Home() {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
-    return results;
+    // Limit the final output to a maximum of 5 guides
+    return results.slice(0, 5);
   }, [allGuides, sortBy, filterHeroId]);
 
   return (
@@ -66,7 +67,7 @@ export function Home() {
         <Grid.Col span={{ base: 12, md: 8 }}>
           <Paper shadow="sm" p="xl" radius="md" withBorder>
             <Group justify="space-between" mb="lg">
-              <Title order={4}>Community Builds</Title>
+              <Title order={4}>Community Guides</Title>
 
               {/* Dropdown to filter by hero */}
               <Select
