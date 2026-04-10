@@ -39,7 +39,7 @@ export function StepLoadout() {
     return result.sort((a, b) => {
       const orderA = categoryOrder[a.item_slot_type.toLowerCase()] || 99;
       const orderB = categoryOrder[b.item_slot_type.toLowerCase()] || 99;
-      
+
       if (orderA !== orderB) return orderA - orderB;
       if (a.cost !== b.cost) return a.cost - b.cost;
       return a.name.localeCompare(b.name);
@@ -60,11 +60,11 @@ export function StepLoadout() {
       <Grid.Col span={{ base: 12, md: 8 }}>
         <Paper shadow="sm" p="xl" radius="md" withBorder>
           <Title order={4} mb="md">Construct Build</Title>
-          
+
           {PHASES.map((phase) => (
-            <Paper 
-              key={phase} p="md" mb="md" radius="sm" withBorder 
-              style={{ 
+            <Paper
+              key={phase} p="md" mb="md" radius="sm" withBorder
+              style={{
                 borderColor: activePhase === phase ? 'var(--mantine-color-blue-filled)' : undefined,
                 backgroundColor: activePhase === phase ? 'var(--mantine-color-blue-light)' : undefined,
                 cursor: 'pointer'
@@ -75,18 +75,18 @@ export function StepLoadout() {
                 <Text fw={600} tt="capitalize">{phase}</Text>
                 {activePhase === phase && <Badge color="blue">Active</Badge>}
               </Group>
-              
+
               <Group gap="xs">
                 {form.values.build[phase].length === 0 ? (
                   <Text c="dimmed" size="sm" fs="italic">Select items from the right.</Text>
                 ) : (
                   form.values.build[phase].map((item, index) => (
                     <Tooltip key={`${item.id}-${index}`} label={`${item.name} (${item.cost})`}>
-                      <Image 
-                        src={item.shop_image_webp || 'https://placehold.co/64'} w={48} h={48} radius="md" 
-                        style={{ 
-                          cursor: 'pointer', 
-                          border: `2px solid ${getBorderColor(item.item_slot_type)}` 
+                      <Image
+                        src={item.shop_image_webp || 'https://placehold.co/64'} w={48} h={48} radius="md"
+                        style={{
+                          cursor: 'pointer',
+                          border: `2px solid ${getBorderColor(item.item_slot_type)}`
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -112,13 +112,13 @@ export function StepLoadout() {
             </div>
 
             {/* --- Filter Controls (Simplified) --- */}
-            <TextInput 
-              placeholder="Search items by name..." 
+            <TextInput
+              placeholder="Search items by name..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.currentTarget.value)}
             />
           </Stack>
-          
+
           {/* Increased height slightly since we removed the dropdowns */}
           <ScrollArea h={500} offsetScrollbars>
             {filteredAndSortedItems.length === 0 ? (
@@ -127,12 +127,12 @@ export function StepLoadout() {
               <SimpleGrid cols={4} spacing="xs">
                 {filteredAndSortedItems.map((item) => (
                   <Tooltip key={item.id} label={`${item.name} (${item.cost})`}>
-                    <Image 
-                      src={item.shop_image_webp} w="100%" radius="md" 
-                      style={{ 
-                        cursor: 'pointer', 
-                        aspectRatio: '1/1', 
-                        border: `2px solid ${getBorderColor(item.item_slot_type)}` 
+                    <Image
+                      src={item.shop_image_webp} w="100%" radius="md"
+                      style={{
+                        cursor: 'pointer',
+                        aspectRatio: '1/1',
+                        border: `2px solid ${getBorderColor(item.item_slot_type)}`
                       }}
                       onClick={() => handleAddItem(item)}
                     />

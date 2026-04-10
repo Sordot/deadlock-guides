@@ -4,6 +4,7 @@ import { Home } from './pages/Home';
 import { CreateGuide } from './pages/CreateGuide';
 import { Heroes } from './pages/Heroes';
 import { HeroDetail } from './pages/HeroDetail';
+import { GuideDetail } from './pages/GuideDetail';
 
 // Define our route tree
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: 'heroes/:heroId', // The :heroId matches what we extract in useParams()
         element: <HeroDetail />
+      },
+      {
+        path: 'guides/:guideId', // View a specific guide by Id
+        element: <GuideDetail />
       }
     ],
   },
