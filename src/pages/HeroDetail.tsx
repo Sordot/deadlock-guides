@@ -75,9 +75,6 @@ export function HeroDetail() {
                         {/* Description Data */}
                         {hero.description.role && <Text fw={700} size="lg">{hero.description.role}</Text>}
                         {hero.description.playstyle && <Text size="sm">{hero.description.playstyle}</Text>}
-                        <Text c="dimmed">
-                            {hero.description?.lore || "Lore not available."}
-                        </Text>
                     </Stack>
                 </Group>
             </Paper>

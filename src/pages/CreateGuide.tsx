@@ -4,6 +4,7 @@ import { Stepper, Button, Group, Container, Title } from '@mantine/core';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useGuideForm, GuideFormProvider } from '../context/GuideFormContext';
 import { StepGeneral } from '../components/guide-builder/StepGeneral';
+import { StepAbilities } from '../components/guide-builder/StepAbilities';
 import { StepLoadout } from '../components/guide-builder/StepLoadout';
 import { StepStrategy } from '../components/guide-builder/StepStrategy';
 
@@ -21,6 +22,7 @@ export function CreateGuide() {
       title: '',
       heroId: preselectedHeroId || null,
       role: null,
+      abilityOrder: [],
       build: { early: [], mid: [], late: [], situational: [] },
       strategy: '',
     },
@@ -113,6 +115,10 @@ export function CreateGuide() {
 
             <Stepper.Step label="General" description="Hero & Role">
               <StepGeneral />
+            </Stepper.Step>
+
+            <Stepper.Step label="Abilities" description="Skill Build">
+              <StepAbilities />
             </Stepper.Step>
 
             <Stepper.Step label="Loadout" description="Items & Build">

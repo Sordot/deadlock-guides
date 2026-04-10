@@ -6,6 +6,9 @@ export interface GuideFormValues {
   title: string;
   heroId: string | null;
   role: string | null;
+  // Store our level 1-15 progression
+  // array where each index represents a level, and the value is the ID of the ability chosen.
+  abilityOrder: number[];
   build: {
     early: Item[];
     mid: Item[];

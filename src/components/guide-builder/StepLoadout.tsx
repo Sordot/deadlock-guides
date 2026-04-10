@@ -65,15 +65,15 @@ export function StepLoadout() {
             <Paper
               key={phase} p="md" mb="md" radius="sm" withBorder
               style={{
-                borderColor: activePhase === phase ? 'var(--mantine-color-blue-filled)' : undefined,
-                backgroundColor: activePhase === phase ? 'var(--mantine-color-blue-light)' : undefined,
+                borderColor: activePhase === phase ? 'var(--mantine-color-deadlockGreen-filled)' : undefined,
+                backgroundColor: activePhase === phase ? 'var(--mantine-color-deadlockGreen-light)' : undefined,
                 cursor: 'pointer'
               }}
               onClick={() => setActivePhase(phase)}
             >
               <Group justify="space-between" mb="sm">
                 <Text fw={600} tt="capitalize">{phase}</Text>
-                {activePhase === phase && <Badge color="blue">Active</Badge>}
+                {activePhase === phase && <Badge color="deadlockGreen" variant="filled">Active</Badge>}
               </Group>
 
               <Group gap="xs">
